@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App';
+import itemLister from './App';
 
-AppRegistry.registerComponent('itemLister', () => App);
+AppRegistry.registerComponent('itemLister', () => itemLister);

@@ -1,58 +1,71 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
-  Platform,
+  AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  ListView,
+  TouchableHighlight
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Toolbar from './app/components/Toolbar/Toolbar';
+const styles = require('./app/styles');
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class itemLister extends Component {
+  constructor() {
+    super();
+    let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      itemDataSource: ds
+    }
+
+    this.renderRow = this.renderRow.bind(this);
+    this.pressRow = this.pressRow.bind(this);
+  }
+
+  componentWillMount() {
+    this.getItems();
+  }
+
+  componentDidMount() {
+    this.getItems();
+  }
+
+  getItems() {
+    let items = [{title: 'Item One'}, {title: 'Item Two'}];
+
+    this.setState({
+      itemDataSource: this.state.itemDataSource.cloneWithRows(items)
+    });
+  }
+
+  pressRow(item) {
+    console.log(item);
+  }
+
+  renderRow(item) {
+    return (
+      <TouchableHighlight onPress={() => {
+        this.pressRow(item);
+      }}>
+        <View style={styles.li}>
+          <Text style={styles.liText}>{item.title}</Text>
+        </View>
+      </TouchableHighlight>
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Toolbar title="ItemLister" />
+        <ListView
+          dataSource={this.state.itemDataSource}
+          renderRow={this.renderRow}
+        />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+AppRegistry.registerComponent('itemLister', () => itemLister);
