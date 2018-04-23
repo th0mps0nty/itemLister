@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import Toolbar from './app/components/Toolbar/Toolbar';
+import AddButton from './app/components/AddButton/AddButton';
 const styles = require('./app/styles');
 import * as firebase from 'firebase';
 
@@ -80,6 +81,10 @@ export default class itemLister extends Component {
     );
   }
 
+  addItem() {
+    
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -88,6 +93,7 @@ export default class itemLister extends Component {
           dataSource={this.state.itemDataSource}
           renderRow={this.renderRow}
         />
+        <AddButton onPress={this.addItem.bind(this)} title="Add Item" />
       </View>
     );
   }
